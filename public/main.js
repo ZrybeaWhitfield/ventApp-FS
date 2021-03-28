@@ -12,7 +12,7 @@ Array.from(thumbUp).forEach(function(element) {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             'date': date,
-            'msg': vent,
+            'vent': vent,
             'thumbUp':thumbUp
           })
         })
@@ -35,7 +35,7 @@ Array.from(thumbDown).forEach(function(element) {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             'date': date,
-            'vent': msg,
+            'vent': vent,
             'thumbUp':thumbUp
           })
         })
@@ -50,16 +50,15 @@ Array.from(thumbDown).forEach(function(element) {
 });
 Array.from(trash).forEach(function(element) {
       element.addEventListener('click', function(){
-        const date = this.parentNode.parentNode.childNodes[1].innerText
-        const vent = this.parentNode.parentNode.childNodes[3].innerText
+        const _id = this.parentNode.parentNode.getAttribute("data-ventID")
+        console.log(_id);
         fetch('messages', {
           method: 'delete',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            'date': name,
-            'vent': msg
+            "_id": _id
           })
         }).then(function (response) {
           window.location.reload()

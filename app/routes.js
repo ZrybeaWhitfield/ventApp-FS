@@ -9,7 +9,7 @@ module.exports = function(app, passport, db) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('messages').find().toArray((err, result) => {
+        db.collection('ventPosts').find().toArray((err, result) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
@@ -27,15 +27,15 @@ module.exports = function(app, passport, db) {
 // message board routes ===============================================================
 
     app.post('/messages', (req, res) => {
-      db.collection('messages').save({date: req.body.date, vent: req.body.vent, thumbUp: 0, thumbDown:0}, (err, result) => {
+      db.collection('ventPosts').save({date: req.body.date, vent: req.body.vent, thumbUp: 0, thumbDown:0}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
       })
     })
-vent
+
     app.put('/messages', (req, res) => {
-      db.collection('messages')
+      db.collection('ventPosts')
       .findOneAndUpdate({date: req.body.date, vent: req.body.vent}, {
         $set: {
           thumbUp:req.body.thumbUp + 1
@@ -49,23 +49,24 @@ vent
       })
     })
 
-    app.put('/thumbDown', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({date: req.body.date, vent: req.body.vent}, {
-        $set: {
-          thumbUp:req.body.thumbUp - 1
-        }
-      }, {
-        sort: {_id: -1},
-        upsert: true
-      }, (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      })
-    })
-
+    // app.put('/thumbDown', (req, res) => {
+    //   db.collection('ventPosts')
+    //   .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+    //     $set: {
+    //       thumbUp:req.body.thumbUp - 1
+    //     }
+    //   }, {
+    //     sort: {_id: -1},
+    //     upsert: true
+    //   }, (err, result) => {
+    //     if (err) return res.send(err)
+    //     res.send(result)
+    //   })
+    // })
+    const ObjectId = require("mongodb").ObjectId;
     app.delete('/messages', (req, res) => {
-      db.collection('messages').findOneAndDelete({date: req.body.date, vent: req.body.vent}, (err, result) => {
+      console.log("this is ", req.body._id, req.body.vent);
+      db.collection('ventPosts').findOneAndDelete({_id: ObjectId(req.body._id)}, (err, result) => {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
       })
