@@ -27,7 +27,7 @@ module.exports = function(app, passport, db) {
 // message board routes ===============================================================
 
     app.post('/messages', (req, res) => {
-      db.collection('ventPosts').save({date: req.body.date, vent: req.body.vent, thumbUp: 0, thumbDown:0}, (err, result) => {
+      db.collection('ventPosts').save({date: req.body.date, vent: req.body.vent, mood: req.body.mood}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
@@ -36,10 +36,12 @@ module.exports = function(app, passport, db) {
 
     app.put('/messages', (req, res) => {
       db.collection('ventPosts')
-      .findOneAndUpdate({date: req.body.date, vent: req.body.vent}, {
-        $set: {
-          thumbUp:req.body.thumbUp + 1
-        }
+      .findOneAndUpdate({date: req.body.date, vent: req.body.vent, mood: req.body.mood}, {
+
+            $set: {
+
+            }
+
       }, {
         sort: {_id: -1},
         upsert: true
@@ -49,20 +51,7 @@ module.exports = function(app, passport, db) {
       })
     })
 
-    // app.put('/thumbDown', (req, res) => {
-    //   db.collection('ventPosts')
-    //   .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
-    //     $set: {
-    //       thumbUp:req.body.thumbUp - 1
-    //     }
-    //   }, {
-    //     sort: {_id: -1},
-    //     upsert: true
-    //   }, (err, result) => {
-    //     if (err) return res.send(err)
-    //     res.send(result)
-    //   })
-    // })
+
     const ObjectId = require("mongodb").ObjectId;
     app.delete('/messages', (req, res) => {
       console.log("this is ", req.body._id, req.body.vent);

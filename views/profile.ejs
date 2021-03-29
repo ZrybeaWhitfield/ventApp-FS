@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>I had a bad Day</title>
+    <title>I Had a Bad Day</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
@@ -10,31 +10,13 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <h1>Your Profile</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
     <div class="row">
 
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
 
-                <% if (user.local.email) { %>
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
-
-                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
-                <% } else { %>
-                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
-                <% } %>
-
-            </div>
-        </div>
         <div class="col-sm-6">
           <h3>B*tch Board</h3>
           <ul class="messages">
@@ -42,9 +24,7 @@
             <li data-ventID="<%= messages[i]._id %>" class="message">
               <span><%= messages[i].date %></span>
               <span><%= messages[i].vent %></span>
-              <span><%= messages[i].thumbUp %></span>
-              <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-              <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+              <span><%= messages[i].mood %></span>
               <span><i class="fa fa-trash" aria-hidden="true"></i></span>
             </li>
           <% } %>
@@ -55,6 +35,14 @@
           <form action="/messages" method="POST">
             <input type="date" min="2020-01-01" name="date">
             <input class="ventBox" type="text" placeholder="Vent" name="vent">
+            <label for="moodSelect">Mood?</label>
+            <select class="moodSelect" name="mood">
+              <option value="default">Today's Mood</option>
+              <option value="Annoyed">😤</option>
+              <option value="Angry">😠</option>
+              <option value="Irate">😡</option>
+              <option value="Livid">🤬</option>
+            </select>
             <button type="submit">Submit</button>
           </form>
         </div>
